@@ -1,13 +1,13 @@
-class Scene1 extends Phaser.Scene {
+class Scene2 extends Phaser.Scene {
     constructor() {
-        super("play1");
+        super("play2");
     }
 
     create() {
-        this.background = this.add.tileSprite(0, 0, this.game.config.width, this.game.config.height, "background")
+        this.background = this.add.tileSprite(0, 0, this.game.config.width, this.game.config.height, "background2")
         this.background.setOrigin(0,0)
 
-        this.player = this.physics.add.sprite(20, 500, "player");
+        this.player = this.physics.add.sprite(50, this.game.config.height - 64, "player");
         this.player.setGravity(0,1500);
         this.cursorKeys = this.input.keyboard.createCursorKeys();
         this.player.setCollideWorldBounds(true);
@@ -22,7 +22,7 @@ class Scene1 extends Phaser.Scene {
         this.movePlayerManager();
 
         if(this.player.x > this.game.config.width - 30) {
-            this.scene.start("play2");
+            this.scene.start("play3");
         }
     }
 
@@ -42,4 +42,3 @@ class Scene1 extends Phaser.Scene {
         }
     }
 }
-

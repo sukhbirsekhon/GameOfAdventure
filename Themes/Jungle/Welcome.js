@@ -5,8 +5,20 @@ class Welcome extends Phaser.Scene {
 
     preload() {
         this.load.image("background", "assets/images/JungleTheme/jungleBack.jpg")
+        this.load.image("background2", "assets/images/JungleTheme/jungleBack2.jpg")
+        this.load.image("background3", "assets/images/JungleTheme/jungleBack3.jpg")
 
-        this.load.spritesheet("player", "assets/images/Character/character.png", {
+        this.load.spritesheet("player", "spritesheets/Character/character.png", {
+            frameWidth: 168,
+            frameHeight: 216
+        });
+
+        this.load.spritesheet("playerRev", "spritesheets/Character/characterRev.png", {
+            frameWidth: 168,
+            frameHeight: 216
+        });
+
+        this.load.spritesheet("wood", "spritesheets/Jungle/Obstacles/wood.png", {
             frameWidth: 168,
             frameHeight: 216
         });
@@ -18,16 +30,14 @@ class Welcome extends Phaser.Scene {
         
         this.anims.create({
             key: "thrust",
-            frames: this.anims.generateFrameNumbers(
-                "player", {start: 0,end:4}
-            ),
+            frames: this.anims.generateFrameNumbers("player", {start: 0,end:4}),
             frameRate: 10,
             repeat: -1
         });
 
         this.anims.create({
             key: 'left',
-            frames: this.anims.generateFrameNumbers('player', { start: 4, end: 0 }),
+            frames: this.anims.generateFrameNumbers('playerRev', { start: 4, end: 0 }),
             frameRate: 10,
             repeat: -1
         });
@@ -38,12 +48,19 @@ class Welcome extends Phaser.Scene {
             frameRate: 10,
             repeat: -1
         });
+
+        this.anims.create({
+            key: 'still',
+            frames: this.anims.generateFrameNumbers('wood', { start: 0, end: 4 }),
+            frameRate: 10,
+            repeat: -1
+        });
         
         this.spacebar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
     }
     update() {
         if (Phaser.Input.Keyboard.JustDown(this.spacebar)) {
-         this.scene.start("playGame");
+         this.scene.start("play1");
         }
     }
 }
