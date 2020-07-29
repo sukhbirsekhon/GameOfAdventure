@@ -3,10 +3,10 @@ window.onload = function() {
         playerSpeed: 200,
     }
     var config = {
-        width: 300, 
-        height: 300,
+        width: 900, 
+        height: 500,
         backgroundColor: 0x000000, 
-        scene: [Scene1],
+        scene: [Welcome, Scene1],
         pixelArt: true,
         physics: {
             default: "arcade",
