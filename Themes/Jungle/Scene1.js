@@ -8,11 +8,11 @@ class Scene1 extends Phaser.Scene {
         this.background.setOrigin(0,0)
 
         this.player = this.physics.add.sprite(20, this.game.config.height - 64, "player");
-        // this.player.play("thrust");
+        this.player.setGravity(0,1000);
         this.cursorKeys = this.input.keyboard.createCursorKeys();
         this.player.setCollideWorldBounds(true);
 
-        this.upKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
+        this.spaceKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 
     }
     update() {
@@ -22,14 +22,12 @@ class Scene1 extends Phaser.Scene {
     }
 
     movePlayerManager(){
-        this.player.setVelocity(0);
-        
-        if(this.player.velocity = 0) {
-            this.player.stop();
-        }
+        // this.player.setVelocity(0);
+       
         if(this.cursorKeys.left.isDown){
             this.player.setVelocityX(-200);
             this.player.anims.play('left', true);
+            this.player.setScale(-.25)
 
         } else if(this.cursorKeys.right.isDown) {
             this.player.setVelocityX(200);
@@ -39,7 +37,7 @@ class Scene1 extends Phaser.Scene {
         if(this.cursorKeys.up.isDown){
             this.player.setVelocityY(-200);
             
-       }
+        }
          else if(this.cursorKeys.down.isDown) {
             this.player.setVelocityY(200);
         }
