@@ -7,6 +7,7 @@ class Welcome extends Phaser.Scene {
         this.load.image("background", "assets/images/JungleTheme/jungleBack.jpg")
         this.load.image("background2", "assets/images/JungleTheme/jungleBack2.jpg")
         this.load.image("background3", "assets/images/JungleTheme/jungleBack3.jpg")
+        this.load.image("plat", "assets/images/JungleTheme/platform1.png");
 
         this.load.spritesheet("player", "spritesheets/Character/character.png", {
             frameWidth: 168,
@@ -14,11 +15,6 @@ class Welcome extends Phaser.Scene {
         });
 
         this.load.spritesheet("playerRev", "spritesheets/Character/characterRev.png", {
-            frameWidth: 168,
-            frameHeight: 216
-        });
-
-        this.load.spritesheet("wood", "spritesheets/Jungle/Obstacles/wood.png", {
             frameWidth: 168,
             frameHeight: 216
         });
@@ -45,13 +41,6 @@ class Welcome extends Phaser.Scene {
         this.anims.create({
             key: 'right',
             frames: this.anims.generateFrameNumbers('player', { start: 0, end: 4 }),
-            frameRate: 10,
-            repeat: -1
-        });
-
-        this.anims.create({
-            key: 'still',
-            frames: this.anims.generateFrameNumbers('wood', { start: 0, end: 4 }),
             frameRate: 10,
             repeat: -1
         });
