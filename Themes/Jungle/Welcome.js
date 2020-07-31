@@ -18,6 +18,11 @@ class Welcome extends Phaser.Scene {
             frameWidth: 168,
             frameHeight: 216
         });
+
+        this.load.spritesheet("coin", "spritesheets/Coins/coin2.png", {
+            frameWidth: 168,
+            frameHeight: 216
+        });
     }
 
     create() {
@@ -41,6 +46,13 @@ class Welcome extends Phaser.Scene {
         this.anims.create({
             key: 'right',
             frames: this.anims.generateFrameNumbers('player', { start: 0, end: 4 }),
+            frameRate: 10,
+            repeat: -1
+        });
+
+        this.anims.create({
+            key: 'rot',
+            frames: this.anims.generateFrameNumbers('coin'),
             frameRate: 10,
             repeat: -1
         });
