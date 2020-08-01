@@ -3,9 +3,12 @@ class Scene1 extends Phaser.Scene {
         super("play1");
     }
 
+   
     create() {
         this.background = this.add.tileSprite(0, 0, this.game.config.width, this.game.config.height, "background")
         this.background.setOrigin(0,0);
+
+        this.collectedCoins = 0;
 
         var musicConfig = {
             mute: false, 
@@ -46,8 +49,9 @@ class Scene1 extends Phaser.Scene {
         graphics.closePath();
         graphics.fillPath();
 
-        this.score = 0;
         this.scoreLabel = this.add.bitmapText(10, 5, "pixelFont", "SCORE 0", 16);
+        this.score = 0;
+
     }
 
     update() {
@@ -61,6 +65,10 @@ class Scene1 extends Phaser.Scene {
         }
 
         this.physics.add.overlap(this.player, this.coins, this.playCollectCoin, null, this);
+
+        if (this.collectedCoins == this.coinAmount) {
+            var bmpText = this.add.bitmapText(250, 250, 'pixelFont','Level complete!\nProceed to next level ==>',42);
+        }
     }
 
     movePlayerManager() {
@@ -71,6 +79,10 @@ class Scene1 extends Phaser.Scene {
         } else if(this.cursorKeys.right.isDown) {
             this.player.setVelocityX(200);
             this.player.anims.play('right', true);
+        }
+        else {
+            this.player.body.velocity.x = 0;
+            this.player.anims.stop();
         }
         
         if(Phaser.Input.Keyboard.JustDown(this.spaceKey)){
@@ -125,6 +137,7 @@ class Scene1 extends Phaser.Scene {
     playCollectCoin(player, coin) {
         this.score += 10;
         this.scoreLabel.text = "SCORE " + this.score;
+        this.collectedCoins += 1;
 
         coin.disableBody(true, true);
         var musicConfig = {
@@ -140,9 +153,9 @@ class Scene1 extends Phaser.Scene {
     }
 
     generateCoins() {
-        var coinAmount = Math.floor(Math.random() * 10) + 5;
+        this.coinAmount = Math.floor(Math.random() * 10) + 5;
 
-        for(var i = 0; i < coinAmount; i++) {
+        for(var i = 0; i < this.coinAmount; i++) {
             var randomX = Phaser.Math.Between(0, this.game.config.width);
 
             var coin = this.physics.add.sprite(randomX, 40, "coin");
@@ -157,6 +170,10 @@ class Scene1 extends Phaser.Scene {
             this.physics.add.collider(coin, this.platforms);
 
         }
+    }
+
+    generateHexColor() { 
+        return '#' + ((0.5 + 0.5 * Math.random()) * 0xFFFFFF << 0).toString(16);
     }
 }
 

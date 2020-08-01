@@ -31,7 +31,7 @@ class Welcome extends Phaser.Scene {
     create() {
         this.add.text(20, 20, "Welcome to GAME OF ADVENTURE!");
         this.add.text(20, 80, "Press Spacebar to start the game...");
-
+        
         this.anims.create({
             key: 'left',
             frames: this.anims.generateFrameNumbers('playerRev', { start: 4, end: 0 }),
