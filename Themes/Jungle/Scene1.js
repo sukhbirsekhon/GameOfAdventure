@@ -51,7 +51,6 @@ class Scene1 extends Phaser.Scene {
 
         this.scoreLabel = this.add.bitmapText(10, 5, "pixelFont", "SCORE 0", 16);
         this.score = 0;
-
     }
 
     update() {
@@ -65,10 +64,12 @@ class Scene1 extends Phaser.Scene {
         }
 
         this.physics.add.overlap(this.player, this.coins, this.playCollectCoin, null, this);
+        
 
         if (this.collectedCoins == this.coinAmount) {
             var bmpText = this.add.bitmapText(250, 250, 'pixelFont','Level complete!\nProceed to next level ==>',42);
         }
+
     }
 
     movePlayerManager() {
@@ -135,8 +136,8 @@ class Scene1 extends Phaser.Scene {
     }
 
     playCollectCoin(player, coin) {
-        this.score += 10;
-        this.scoreLabel.text = "SCORE " + this.score;
+        gameScore += 100;
+        this.scoreLabel.text = "SCORE " + gameScore;
         this.collectedCoins += 1;
 
         coin.disableBody(true, true);
@@ -175,5 +176,6 @@ class Scene1 extends Phaser.Scene {
     generateHexColor() { 
         return '#' + ((0.5 + 0.5 * Math.random()) * 0xFFFFFF << 0).toString(16);
     }
+
 }
 

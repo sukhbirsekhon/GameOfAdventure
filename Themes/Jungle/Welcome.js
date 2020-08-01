@@ -11,6 +11,7 @@ class Welcome extends Phaser.Scene {
         this.load.bitmapFont("pixelFont", "assets/font/font.png", "assets/font/font.xml");
         this.load.audio("coinSound", "assets/sound/Coin-Sound.mp3");
         this.load.audio("backgroundSound", "assets/sound/Background-Sound.wav");
+        this.load.audio("snakeSound", "assets/sound/snake.mp3");
 
         this.load.spritesheet("player", "spritesheets/Character/character.png", {
             frameWidth: 168,
@@ -25,6 +26,16 @@ class Welcome extends Phaser.Scene {
         this.load.spritesheet("coin", "spritesheets/Coins/coins.png", {
             frameWidth: 100,
             frameHeight: 100
+        });
+
+        this.load.spritesheet("snake", "assets/images/JungleTheme/snakes.png", {
+            frameWidth: 211,
+            frameHeight: 235
+        });
+
+        this.load.spritesheet("snakeRev", "assets/images/JungleTheme/snake-rev.png", {
+            frameWidth: 211,
+            frameHeight: 235
         });
     }
 
@@ -53,6 +64,20 @@ class Welcome extends Phaser.Scene {
             repeat: -1
         });
         
+        this.anims.create({
+            key: 'enemySnake',
+            frames: this.anims.generateFrameNumbers('snake', {start: 0, end: 10}),
+            frameRate: 10,
+            repeat: -1
+        });
+
+        this.anims.create({
+            key: 'enemySnakeRev',
+            frames: this.anims.generateFrameNumbers('snakeRev', {start: 0, end: 10}),
+            frameRate: 10,
+            repeat: -1
+        });
+
         this.spacebar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
     }
     update() {

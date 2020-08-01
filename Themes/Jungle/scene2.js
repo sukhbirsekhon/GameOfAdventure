@@ -3,7 +3,6 @@ class Scene2 extends Phaser.Scene {
         super("play2");
     }
 
-
     create() {
         this.background = this.add.tileSprite(0, 0, this.game.config.width, this.game.config.height, "background2")
         this.background.setOrigin(0,0);
@@ -29,6 +28,12 @@ class Scene2 extends Phaser.Scene {
         this.player.setGravity(0,1500);
         this.player.setCollideWorldBounds(true);
 
+        this.snakeSound = this.sound.add("snakeSound");
+        this.snake = this.physics.add.sprite(880, 500, "snake");
+        this.snake.setCollideWorldBounds(true);
+        this.snake.setVelocityX(-100);
+        this.snake.setBounce(1);
+
         this.platforms = this.physics.add.group();
 
         this.cursorKeys = this.input.keyboard.createCursorKeys();
@@ -50,6 +55,10 @@ class Scene2 extends Phaser.Scene {
         graphics.fillPath();
 
         this.scoreLabel = this.add.bitmapText(10, 5, "pixelFont", "SCORE 0", 16);
+        this.score = 0;
+
+        this.physics.add.collider(this.snake, this.player, this.enemyHit, null, this);
+        this.physics.add.collider(this.platforms, this.snake);
     }
 
     update() {
@@ -63,10 +72,13 @@ class Scene2 extends Phaser.Scene {
         }
 
         this.physics.add.overlap(this.player, this.coins, this.playCollectCoin, null, this);
+        
 
         if (this.collectedCoins == this.coinAmount) {
             var bmpText = this.add.bitmapText(250, 250, 'pixelFont','Level complete!\nProceed to next level ==>',42);
         }
+
+        this.moveEnemyManager();
     }
 
     movePlayerManager() {
@@ -87,6 +99,18 @@ class Scene2 extends Phaser.Scene {
             if(this.player.body.velocity.y == -0) {
                 this.player.setVelocityY(-700);
             }
+        }
+    }
+
+    moveEnemyManager(){
+        this.snake.scaleX = .30;
+        this.snake.scaleY = .30;
+        
+        if (this.snake.body.velocity.x == 100) {
+            this.snake.anims.play("enemySnakeRev", true);
+        } 
+        if (this.snake.body.velocity.x == -100) {
+            this.snake.anims.play("enemySnake", true);
         }
     }
 
@@ -133,8 +157,8 @@ class Scene2 extends Phaser.Scene {
     }
 
     playCollectCoin(player, coin) {
-        this.score += 10;
-        this.scoreLabel.text = "SCORE " + this.score;
+        gameScore += 100;
+        this.scoreLabel.text = "SCORE " + gameScore;
         this.collectedCoins += 1;
 
         coin.disableBody(true, true);
@@ -172,5 +196,19 @@ class Scene2 extends Phaser.Scene {
 
     generateHexColor() { 
         return '#' + ((0.5 + 0.5 * Math.random()) * 0xFFFFFF << 0).toString(16);
+    }
+
+    enemyHit(enemy, player) {
+        this.snakeSound.play();
+        gameScore -= 10;
+        console.log(gameScore);
+        this.scoreLabel.text = "SCORE " + gameScore;
+
+        if (enemy.body.x > player.body.x) {
+            enemy.body.velocity.x = 100;
+        } 
+        if (enemy.body.x < player.body.x) {
+            enemy.body.velocity.x = -100;
+        }
     }
 }
