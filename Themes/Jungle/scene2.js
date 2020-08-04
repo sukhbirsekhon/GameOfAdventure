@@ -3,7 +3,9 @@ class Scene2 extends Phaser.Scene {
         super("play2");
     }
 
-
+    init (data) {
+        this.score = data.score;
+    }
     create() {
         this.background = this.add.tileSprite(0, 0, this.game.config.width, this.game.config.height, "background2")
         this.background.setOrigin(0,0);
@@ -49,7 +51,9 @@ class Scene2 extends Phaser.Scene {
         graphics.closePath();
         graphics.fillPath();
 
-        this.scoreLabel = this.add.bitmapText(10, 5, "pixelFont", "SCORE 0", 16);
+        this.scoreLabel = this.add.bitmapText(10, 5, "pixelFont", 'SCORE: 0', 16);
+        this.scoreLabel.text = "SCORE " + this.score;
+
     }
 
     update() {

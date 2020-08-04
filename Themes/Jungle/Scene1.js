@@ -3,7 +3,7 @@ class Scene1 extends Phaser.Scene {
         super("play1");
     }
 
-   
+
     create() {
         this.background = this.add.tileSprite(0, 0, this.game.config.width, this.game.config.height, "background")
         this.background.setOrigin(0,0);
@@ -61,7 +61,7 @@ class Scene1 extends Phaser.Scene {
         this.movePlayerManager();
 
         if(this.player.x > this.game.config.width - 30) {
-            this.scene.start("play2");
+            this.scene.start("play2", {score: this.score});
         }
 
         this.physics.add.overlap(this.player, this.coins, this.playCollectCoin, null, this);
