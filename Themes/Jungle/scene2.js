@@ -4,7 +4,7 @@ class Scene2 extends Phaser.Scene {
     }
 
     create() {
-        this.background = this.add.tileSprite(0, 0, this.game.config.width, this.game.config.height, "background2")
+        this.background = this.add.tileSprite(0, 0, this.game.config.width, this.game.config.height, "background2");
         this.background.setOrigin(0,0);
 
         this.collectedCoins = 0;
@@ -33,6 +33,13 @@ class Scene2 extends Phaser.Scene {
         this.snake.setCollideWorldBounds(true);
         this.snake.setVelocityX(-100);
         this.snake.setBounce(1);
+        this.snake.setGravity(0, 1500);
+
+        this.bird = this.physics.add.sprite(200, 255, "bird");
+        this.birdSound = this.sound.add("birdSound");
+        this.bird.setCollideWorldBounds(true);
+        this.bird.setVelocityX(-200);
+        this.bird.setBounce(1);
 
         this.platforms = this.physics.add.group();
 
@@ -54,10 +61,10 @@ class Scene2 extends Phaser.Scene {
         graphics.closePath();
         graphics.fillPath();
 
-        this.scoreLabel = this.add.bitmapText(10, 5, "pixelFont", "SCORE 0", 16);
-        this.score = 0;
+        this.scoreLabel = this.add.bitmapText(10, 5, "pixelFont", "SCORE " + gameScore, 16);
 
         this.physics.add.collider(this.snake, this.player, this.enemyHit, null, this);
+        this.physics.add.overlap(this.bird, this.player, this.birdHit, null, this);
         this.physics.add.collider(this.platforms, this.snake);
     }
 
@@ -68,7 +75,7 @@ class Scene2 extends Phaser.Scene {
         this.movePlayerManager();
 
         if(this.player.x > this.game.config.width - 30) {
-            this.scene.start("play2");
+            this.scene.start("play3");
         }
 
         this.physics.add.overlap(this.player, this.coins, this.playCollectCoin, null, this);
@@ -78,7 +85,8 @@ class Scene2 extends Phaser.Scene {
             var bmpText = this.add.bitmapText(250, 250, 'pixelFont','Level complete!\nProceed to next level ==>',42);
         }
 
-        this.moveEnemyManager();
+        this.moveSnakeManager();
+        this.moveBirdManager();
     }
 
     movePlayerManager() {
@@ -102,7 +110,7 @@ class Scene2 extends Phaser.Scene {
         }
     }
 
-    moveEnemyManager(){
+    moveSnakeManager(){
         this.snake.scaleX = .30;
         this.snake.scaleY = .30;
         
@@ -111,6 +119,19 @@ class Scene2 extends Phaser.Scene {
         } 
         if (this.snake.body.velocity.x == -100) {
             this.snake.anims.play("enemySnake", true);
+        }
+    }
+
+    moveBirdManager() {
+        if (this.bird.body.velocity.x == 200) {
+            this.bird.scaleX = .65;
+            this.bird.scaleY = .65;
+            this.bird.anims.play("birdAnim", true);
+        } 
+        if (this.bird.body.velocity.x == -200) {
+            this.bird.scaleX = .45;
+            this.bird.scaleY = .45;
+            this.bird.anims.play("birdAnimRev", true);
         }
     }
 
@@ -209,6 +230,19 @@ class Scene2 extends Phaser.Scene {
         } 
         if (enemy.body.x < player.body.x) {
             enemy.body.velocity.x = -100;
+        }
+    }
+
+    birdHit(bird, player) {
+        this.birdSound.play();
+        gameScore -= 10;
+        this.scoreLabel.text = "SCORE " + gameScore;
+
+        if(bird.body.x > player.body.x) {
+            bird.body.velocity.x = 200;
+        }
+        if (bird.body.x < player.body.x) {
+            bird.body.velocity.x = -200;
         }
     }
 }

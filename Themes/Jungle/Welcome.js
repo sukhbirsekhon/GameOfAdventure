@@ -5,13 +5,15 @@ class Welcome extends Phaser.Scene {
 
     preload() {
         this.load.image("background", "assets/images/JungleTheme/jungleBack.jpg")
-        this.load.image("background2", "assets/images/JungleTheme/jungleBack2.jpg")
+        this.load.image("background2", "assets/images/JungleTheme/jungleBack6.jpg")
         this.load.image("background3", "assets/images/JungleTheme/jungleBack3.jpg")
         this.load.image("plat", "assets/images/JungleTheme/platform1.png");
+        this.load.image("fireball", "assets/images/JungleTheme/fireBall.png");
         this.load.bitmapFont("pixelFont", "assets/font/font.png", "assets/font/font.xml");
         this.load.audio("coinSound", "assets/sound/Coin-Sound.mp3");
         this.load.audio("backgroundSound", "assets/sound/Background-Sound.wav");
         this.load.audio("snakeSound", "assets/sound/snake.mp3");
+        this.load.audio("birdSound", "assets/sound/bird.mp3");
 
         this.load.spritesheet("player", "spritesheets/Character/character.png", {
             frameWidth: 168,
@@ -36,6 +38,16 @@ class Welcome extends Phaser.Scene {
         this.load.spritesheet("snakeRev", "assets/images/JungleTheme/snake-rev.png", {
             frameWidth: 211,
             frameHeight: 235
+        });
+
+        this.load.spritesheet("bird", "assets/images/JungleTheme/bird.png", {
+            frameWidth: 116,
+            frameHeight: 110
+        });
+
+        this.load.spritesheet("birdRev", "assets/images/JungleTheme/birdRev.png", {
+            frameWidth: 190,
+            frameHeight: 166
         });
     }
 
@@ -74,6 +86,20 @@ class Welcome extends Phaser.Scene {
         this.anims.create({
             key: 'enemySnakeRev',
             frames: this.anims.generateFrameNumbers('snakeRev', {start: 0, end: 10}),
+            frameRate: 10,
+            repeat: -1
+        });
+
+        this.anims.create({
+            key: 'birdAnim',
+            frames: this.anims.generateFrameNumbers('bird', {start: 0, end: 13}),
+            frameRate: 10,
+            repeat: -1
+        });
+
+        this.anims.create({
+            key: 'birdAnimRev',
+            frames: this.anims.generateFrameNumbers('birdRev', {start: 0, end: 9}),
             frameRate: 10,
             repeat: -1
         });
