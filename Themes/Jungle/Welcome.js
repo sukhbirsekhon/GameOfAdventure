@@ -9,7 +9,9 @@ class Welcome extends Phaser.Scene {
         this.load.image("background3", "assets/images/JungleTheme/jungleBack3.jpg")
         this.load.image("plat", "assets/images/JungleTheme/platform1.png");
         this.load.image("fireball", "assets/images/JungleTheme/fireBall.png");
+
         this.load.bitmapFont("pixelFont", "assets/font/font.png", "assets/font/font.xml");
+
         this.load.audio("coinSound", "assets/sound/Coin-Sound.mp3");
         this.load.audio("backgroundSound", "assets/sound/Background-Sound.wav");
         this.load.audio("snakeSound", "assets/sound/snake.mp3");
