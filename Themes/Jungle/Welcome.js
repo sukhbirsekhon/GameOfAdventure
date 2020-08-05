@@ -49,6 +49,11 @@ class Welcome extends Phaser.Scene {
             frameWidth: 190,
             frameHeight: 166
         });
+
+        this.load.spritesheet("explosion", "spritesheets/Explosion/explosion.png",{
+            frameWidth: 16,
+            frameHeight: 16
+          });
     }
 
     create() {
@@ -103,6 +108,14 @@ class Welcome extends Phaser.Scene {
             frameRate: 10,
             repeat: -1
         });
+
+        this.anims.create({
+            key: "explode",
+            frames: this.anims.generateFrameNumbers("explosion"),
+            frameRate: 20,
+            repeat: 0,
+            hideOnComplete: true
+          });
 
         this.spacebar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
     }

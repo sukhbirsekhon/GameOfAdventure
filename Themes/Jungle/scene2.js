@@ -222,7 +222,6 @@ class Scene2 extends Phaser.Scene {
     enemyHit(enemy, player) {
         this.snakeSound.play();
         gameScore -= 10;
-        console.log(gameScore);
         this.scoreLabel.text = "SCORE " + gameScore;
 
         if (enemy.body.x > player.body.x) {

@@ -16,5 +16,5 @@ var config = {
         }
     }
 }
-
+var gameOver = false;
     var game = new Phaser.Game(config);

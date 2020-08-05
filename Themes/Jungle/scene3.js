@@ -6,6 +6,21 @@ class Scene3 extends Phaser.Scene {
     create() {
         this.background = this.add.tileSprite(0, 0, this.game.config.width, this.game.config.height, "background3")
         this.background.setOrigin(0,0)
+        
+        this.fireballs = this.add.group();
+
+        this.snakeSound = this.sound.add("snakeSound");
+        this.snake = this.physics.add.sprite(880, 500, "snake");
+        this.snake.setCollideWorldBounds(true);
+        this.snake.setVelocityX(-100);
+        this.snake.setBounce(1);
+        this.snake.setGravity(0, 1500);
+
+        this.bird = this.physics.add.sprite(200, 100, "bird");
+        this.birdSound = this.sound.add("birdSound");
+        this.bird.setCollideWorldBounds(true);
+        this.bird.setVelocityX(-200);
+        this.bird.setBounce(1);
 
         this.player = this.physics.add.sprite(50, this.game.config.height - 64, "player");
         this.player.setGravity(0,1500);
@@ -19,6 +34,12 @@ class Scene3 extends Phaser.Scene {
             delay: 1000,
             repeat: 30,
             callback: this.createFireball,
+            callbackScope: this,
+        });
+
+        this.time.addEvent({
+            delay: 30000,
+            callback: this.gameOver,
             callbackScope: this,
         });
 
@@ -52,7 +73,15 @@ class Scene3 extends Phaser.Scene {
         graphics.fillPath();
 
         this.scoreLabel = this.add.bitmapText(10, 5, "pixelFont", "SCORE " + gameScore, 16);
+        this.counter = 30;
+        this.timerText = this.add.text(10, 15, 'Time Left: 30s', { font: "24px Arial", fill: "#ffffff", align: "center" });
+        // this.timerText.anchor.setOrigin(0.5, 0.5);
 
+        // this.game.time.events.loop(Phaser.Timer.SECOND, updateCounter, this);
+
+        this.physics.add.collider(this.snake, this.player, this.enemyHit, null, this);
+        this.physics.add.overlap(this.bird, this.player, this.birdHit, null, this);
+        this.physics.add.collider(this.platforms, this.snake);
     }
     update() {
         this.player.scaleX = .35;
@@ -61,6 +90,25 @@ class Scene3 extends Phaser.Scene {
         this.movePlayerManager();
         
         this.physics.add.overlap(this.player, this.coins, this.playCollectCoin, null, this);
+        this.physics.add.overlap(this.player, this.fireballs, this.fireballHit, null, this);
+
+        if (gameOver){
+            return;
+        }
+
+        this.moveSnakeManager();
+        this.moveBirdManager();
+    }
+
+    fireballHit(player, fireball) {
+        gameScore -= 100;
+        this.scoreLabel.text = "SCORE " + gameScore;
+
+        this.explosion = this.add.sprite(fireball.body.x, fireball.body.y, "explosion");
+        this.explosion.scaleX = 3.50;
+        this.explosion.scaleY = 3.50;
+        this.explosion.anims.play("explode", true);
+        fireball.disableBody(true, true);
     }
 
     playCollectCoin(player, coin) {
@@ -79,6 +127,57 @@ class Scene3 extends Phaser.Scene {
             delay: 0
         }
         this.coinSound.play(musicConfig);
+    }
+
+    moveSnakeManager(){
+        this.snake.scaleX = .30;
+        this.snake.scaleY = .30;
+        
+        if (this.snake.body.velocity.x == 100) {
+            this.snake.anims.play("enemySnakeRev", true);
+        } 
+        if (this.snake.body.velocity.x == -100) {
+            this.snake.anims.play("enemySnake", true);
+        }
+    }
+
+    moveBirdManager() {
+        if (this.bird.body.velocity.x == 200) {
+            this.bird.scaleX = .65;
+            this.bird.scaleY = .65;
+            this.bird.anims.play("birdAnim", true);
+        } 
+        if (this.bird.body.velocity.x == -200) {
+            this.bird.scaleX = .45;
+            this.bird.scaleY = .45;
+            this.bird.anims.play("birdAnimRev", true);
+        }
+    }
+
+    enemyHit(enemy, player) {
+        this.snakeSound.play();
+        gameScore -= 10;
+        this.scoreLabel.text = "SCORE " + gameScore;
+
+        if (enemy.body.x > player.body.x) {
+            enemy.body.velocity.x = 100;
+        } 
+        if (enemy.body.x < player.body.x) {
+            enemy.body.velocity.x = -100;
+        }
+    }
+
+    birdHit(bird, player) {
+        this.birdSound.play();
+        gameScore -= 10;
+        this.scoreLabel.text = "SCORE " + gameScore;
+
+        if(bird.body.x > player.body.x) {
+            bird.body.velocity.x = 200;
+        }
+        if (bird.body.x < player.body.x) {
+            bird.body.velocity.x = -200;
+        }
     }
 
     addPlatformToRandomPlaces() {
@@ -149,6 +248,14 @@ class Scene3 extends Phaser.Scene {
         fireball.setVelocityX(-200);
         fireball.scaleX = .25;
         fireball.scaleY = .25;
+
+        this.fireballs.add(fireball);
+
+        if (this.counter != 0){
+            this.counter--;
+        }
+
+        this.timerText.setText('Time Left: ' + this.counter + 's');
     }
 
     createCoin() {
@@ -166,4 +273,33 @@ class Scene3 extends Phaser.Scene {
     removeCoin(coin) {
         // this.coins.getChildren([0]).disableBody();
     }
+
+    gameOver() {
+        this.physics.pause();
+        gameOver = true;
+        
+        this.add.bitmapText(250, 250, 'pixelFont','Game Over!',42);
+        
+        this.resetButton = this.add.text(250, 300, 'Restart Game', { fill: '#FF0000', fontSize: '42px'}).setInteractive().on('pointerdown', () => this.resetGame() ).on('pointerover', () => this.resetButton.setStyle({ fill: '#ff0'}) ).on('pointerout', () =>  this.resetButton.setStyle({ fill: '#FF0000' }) );
+
+        this.mainMenuButton = this.add.text(250, 350, 'Main Menu', { fill: '#FF0000', fontSize: '42px'}).setInteractive().on('pointerdown', () => this.mainMenu() ).on('pointerover', () => this.mainMenuButton.setStyle({ fill: '#ff0'}) ).on('pointerout', () =>  this.mainMenuButton.setStyle({ fill: '#FF0000' }) );
+    }
+
+    resetGame() {
+        gameScore = 0;
+        gameOver = false;
+        this.scene.start("play1");
+    }
+
+    mainMenu() {
+        this.scene.start("bootGame");
+    }
+
+    // updateCounter() {
+
+    //     this.counter--;
+    
+    //     this.timerText.setText('Counter: ' + this.counter);
+    
+    // }
 }
