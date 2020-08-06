@@ -10,6 +10,7 @@ class Welcome extends Phaser.Scene {
         this.load.image("background3", "assets/images/JungleTheme/jungleBack3.jpg");
         this.load.image("gameTitle", "assets/titleScreen/GameTitle.png");
         this.load.image("jungleTitleBackground", "assets/titleScreen/cartoonJungleBackground.png");
+        this.load.image("spaceTitleBackground", "assets/titleScreen/cartoonJungleBackground.png");
 
         this.load.image("plat", "assets/images/JungleTheme/platform1.png");
         this.load.image("fireball", "assets/images/JungleTheme/fireBall.png");
@@ -18,7 +19,6 @@ class Welcome extends Phaser.Scene {
         this.load.audio("backgroundSound", "assets/sound/Background-Sound.wav");
         this.load.audio("snakeSound", "assets/sound/snake.mp3");
         this.load.audio("birdSound", "assets/sound/bird.mp3");
-
 
         this.load.image("spacePlatform", "assets/images/SpaceTheme/spacePlatform4.png");
         this.load.image("spaceBackground", "assets/images/SpaceTheme/spaceBack.jpg");
@@ -81,10 +81,8 @@ class Welcome extends Phaser.Scene {
         this.background.setOrigin(0,0);
         this.gameTitle = this.add.image(450,100,"gameTitle");
         this.jungleBackground = this.add.image(300,300,"jungleTitleBackground").setInteractive().on('pointerdown', () => this.startJungle() )
-        //this.add.text(20, 20, "Welcome to GAME OF ADVENTURE!");
-        //this.add.text(20, 80, "Press Spacebar to start the game...");
-        
-        
+        this.spaceTitleBackground = this.add.image(600,300,"spaceTitleBackground").setInteractive().on('pointerdown', () => this.startSpace() )
+
         this.spacebar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
         this.createAnimations();
     }
@@ -93,11 +91,18 @@ class Welcome extends Phaser.Scene {
         this.jungleBackground.scaleX = .25;
         this.jungleBackground.scaleY = .25;
 
+        this.spaceTitleBackground.scaleX = .25;
+        this.spaceTitleBackground.scaleY = .25;
+
         //if (Phaser.Input.Keyboard.JustDown(this.spacebar)) { }
     }
 
     startJungle() {
         this.scene.start("play1");
+    }
+
+    startSpace() {
+        this.scene.start("spacePlay1");
     }
 
     createAnimations() {
