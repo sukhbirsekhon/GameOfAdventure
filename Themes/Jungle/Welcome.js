@@ -27,6 +27,9 @@ class Welcome extends Phaser.Scene {
         this.load.image("spaceBackground2", "assets/images/SpaceTheme/spaceBack2.jpg");
         this.load.image("meteor", "assets/images/SpaceTheme/meteor.png");
 
+        this.load.image("cloud", "assets/images/JungleTheme/cloud.png");
+        this.load.image("rain", "assets/images/JungleTheme/rain.png");
+
         this.load.spritesheet("player", "spritesheets/Character/character.png", {
             frameWidth: 168,
             frameHeight: 216
@@ -72,18 +75,18 @@ class Welcome extends Phaser.Scene {
             frameHeight: 166
         });
 
-        this.load.spritesheet("explosion", "spritesheets/Explosion/explosion.png",{
+        this.load.spritesheet("explosion", "spritesheets/Explosion/explosion.png", {
             frameWidth: 16,
             frameHeight: 16
-          });
+        });
     }
 
     create() {
         this.background = this.add.tileSprite(0, 0, this.game.config.width, this.game.config.height, "background0")
-        this.background.setOrigin(0,0);
-        this.gameTitle = this.add.image(450,100,"gameTitle");
-        this.jungleBackground = this.add.image(300,300,"jungleTitleBackground").setInteractive().on('pointerdown', () => this.startJungle() )
-        this.spaceTitleBackground = this.add.image(600,300,"spaceTitleBackground").setInteractive().on('pointerdown', () => this.startSpace() )
+        this.background.setOrigin(0, 0);
+        this.gameTitle = this.add.image(450, 100, "gameTitle");
+        this.jungleBackground = this.add.image(300, 300, "jungleTitleBackground").setInteractive().on('pointerdown', () => this.startJungle())
+        this.spaceTitleBackground = this.add.image(600, 300, "spaceTitleBackground").setInteractive().on('pointerdown', () => this.startSpace())
 
         this.spacebar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
         this.createAnimations();
@@ -96,7 +99,6 @@ class Welcome extends Phaser.Scene {
         this.spaceTitleBackground.scaleX = .25;
         this.spaceTitleBackground.scaleY = .25;
 
-        //if (Phaser.Input.Keyboard.JustDown(this.spacebar)) { }
     }
 
     startJungle() {
@@ -138,35 +140,35 @@ class Welcome extends Phaser.Scene {
 
         this.anims.create({
             key: 'rot',
-            frames: this.anims.generateFrameNumbers('coin', {start: 0, end: 10}),
+            frames: this.anims.generateFrameNumbers('coin', { start: 0, end: 10 }),
             frameRate: 10,
             repeat: -1
         });
-        
+
         this.anims.create({
             key: 'enemySnake',
-            frames: this.anims.generateFrameNumbers('snake', {start: 0, end: 10}),
+            frames: this.anims.generateFrameNumbers('snake', { start: 0, end: 10 }),
             frameRate: 10,
             repeat: -1
         });
 
         this.anims.create({
             key: 'enemySnakeRev',
-            frames: this.anims.generateFrameNumbers('snakeRev', {start: 0, end: 10}),
+            frames: this.anims.generateFrameNumbers('snakeRev', { start: 0, end: 10 }),
             frameRate: 10,
             repeat: -1
         });
 
         this.anims.create({
             key: 'birdAnim',
-            frames: this.anims.generateFrameNumbers('bird', {start: 0, end: 13}),
+            frames: this.anims.generateFrameNumbers('bird', { start: 0, end: 13 }),
             frameRate: 10,
             repeat: -1
         });
 
         this.anims.create({
             key: 'birdAnimRev',
-            frames: this.anims.generateFrameNumbers('birdRev', {start: 0, end: 9}),
+            frames: this.anims.generateFrameNumbers('birdRev', { start: 0, end: 9 }),
             frameRate: 10,
             repeat: -1
         });
@@ -177,6 +179,6 @@ class Welcome extends Phaser.Scene {
             frameRate: 20,
             repeat: 0,
             hideOnComplete: true
-          });
+        });
     }
 }

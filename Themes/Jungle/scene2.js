@@ -5,16 +5,38 @@ class Scene2 extends Phaser.Scene {
 
     create() {
         this.background = this.add.tileSprite(0, 0, this.game.config.width, this.game.config.height, "background2");
-        this.background.setOrigin(0,0);
+        this.background.setOrigin(0, 0);
+
+        console.log(weatherDes);
+
+        if (weatherDes.includes('cloud')) {
+            this.clouds = this.add.group();
+            this.time.addEvent({
+                delay: 2000,
+                repeat: 5,
+                callback: this.createCloud,
+                callbackScope: this,
+            });
+        }
+
+        if (weatherDes.includes('rain')) {
+            this.rains = this.add.group();
+            this.time.addEvent({
+                delay: 100,
+                repeat: 100,
+                callback: this.createRain,
+                callbackScope: this,
+            });
+        }
 
         this.collectedCoins = 0;
 
         var musicConfig = {
-            mute: false, 
-            volume: 0.3, 
+            mute: false,
+            volume: 0.3,
             rate: 1,
-            detune: 0, 
-            seek: 0, 
+            detune: 0,
+            seek: 0,
             loop: true,
             delay: 0
         }
@@ -23,9 +45,9 @@ class Scene2 extends Phaser.Scene {
 
         this.coinSound = this.sound.add("coinSound");
         this.coins = this.physics.add.group();
-        
+
         this.player = this.physics.add.sprite(20, 500, "player");
-        this.player.setGravity(0,1500);
+        this.player.setGravity(0, 1500);
         this.player.setCollideWorldBounds(true);
 
         this.snakeSound = this.sound.add("snakeSound");
@@ -45,7 +67,7 @@ class Scene2 extends Phaser.Scene {
 
         this.cursorKeys = this.input.keyboard.createCursorKeys();
         this.spaceKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
-        
+
         this.addPlatformToRandomPlaces();
 
         this.generateCoins();
@@ -53,11 +75,11 @@ class Scene2 extends Phaser.Scene {
         var graphics = this.add.graphics();
         graphics.fillStyle(0x000000, 1);
         graphics.beginPath();
-        graphics.moveTo(0,0);
+        graphics.moveTo(0, 0);
         graphics.lineTo(this.game.config.width, 0);
         graphics.lineTo(this.game.config.width, 20);
         graphics.lineTo(0, 20);
-        graphics.lineTo(0,0);
+        graphics.lineTo(0, 0);
         graphics.closePath();
         graphics.fillPath();
 
@@ -74,27 +96,51 @@ class Scene2 extends Phaser.Scene {
 
         this.movePlayerManager();
 
-        if(this.player.x > this.game.config.width - 30) {
+        if (this.player.x > this.game.config.width - 30) {
             this.scene.start("play3");
         }
 
         this.physics.add.overlap(this.player, this.coins, this.playCollectCoin, null, this);
-        
+
 
         if (this.collectedCoins == this.coinAmount) {
-            var bmpText = this.add.bitmapText(250, 250, 'pixelFont','Level complete!\nProceed to next level ==>',42);
+            var bmpText = this.add.bitmapText(250, 250, 'pixelFont', 'Level complete!\nProceed to next level ==>', 42);
         }
 
         this.moveSnakeManager();
         this.moveBirdManager();
     }
 
+    createCloud() {
+        var cloud = this.physics.add.sprite(this.game.config.width + Phaser.Math.Between(60, 600), Phaser.Math.Between(0, 200), "cloud");
+        cloud.setVelocityX(-75);
+        cloud.scaleX = .25;
+        cloud.scaleY = .25;
+
+        this.clouds.add(cloud);
+    }
+
+    createRain() {
+        var rain = this.physics.add.sprite(Phaser.Math.Between(0, this.game.config.width), 0, "rain");
+        this.rains.add(rain);
+
+        rain.setGravity(0, 1500);
+        rain.scaleX = .02;
+        rain.scaleY = .1;
+
+        this.physics.add.collider(this.rains, this.platforms, this.disappearRain, null, this);
+    }
+
+    disappearRain(rain, platform) {
+        rain.disableBody(true, true);
+    }
+
     movePlayerManager() {
-        if(this.cursorKeys.left.isDown){
+        if (this.cursorKeys.left.isDown) {
             this.player.setVelocityX(-200);
             this.player.anims.play('left', true);
 
-        } else if(this.cursorKeys.right.isDown) {
+        } else if (this.cursorKeys.right.isDown) {
             this.player.setVelocityX(200);
             this.player.anims.play('right', true);
         }
@@ -102,21 +148,21 @@ class Scene2 extends Phaser.Scene {
             this.player.body.velocity.x = 0;
             this.player.anims.stop();
         }
-        
-        if(Phaser.Input.Keyboard.JustDown(this.spaceKey)){
-            if(this.player.body.velocity.y == -0) {
+
+        if (Phaser.Input.Keyboard.JustDown(this.spaceKey)) {
+            if (this.player.body.velocity.y == -0) {
                 this.player.setVelocityY(-700);
             }
         }
     }
 
-    moveSnakeManager(){
+    moveSnakeManager() {
         this.snake.scaleX = .30;
         this.snake.scaleY = .30;
-        
+
         if (this.snake.body.velocity.x == 100) {
             this.snake.anims.play("enemySnakeRev", true);
-        } 
+        }
         if (this.snake.body.velocity.x == -100) {
             this.snake.anims.play("enemySnake", true);
         }
@@ -127,7 +173,7 @@ class Scene2 extends Phaser.Scene {
             this.bird.scaleX = .65;
             this.bird.scaleY = .65;
             this.bird.anims.play("birdAnim", true);
-        } 
+        }
         if (this.bird.body.velocity.x == -200) {
             this.bird.scaleX = .45;
             this.bird.scaleY = .45;
@@ -136,45 +182,45 @@ class Scene2 extends Phaser.Scene {
     }
 
     addPlatformToRandomPlaces() {
-            var plat = this.physics.add.sprite(250, 150, "plat")
-            this.platforms.add(plat);
-            this.physics.add.collider(this.player, plat);
-            plat.scaleX = .45;
-            plat.scaleY = .25;
-            plat.body.allowGravity = false;
-            plat.body.immovable = true;
+        var plat = this.physics.add.sprite(250, 150, "plat")
+        this.platforms.add(plat);
+        this.physics.add.collider(this.player, plat);
+        plat.scaleX = .45;
+        plat.scaleY = .25;
+        plat.body.allowGravity = false;
+        plat.body.immovable = true;
 
-            var plat1 = this.physics.add.sprite(100, 300, "plat")
-            this.platforms.add(plat1);
-            this.physics.add.collider(this.player, plat1);
-            plat1.scaleX = .45;
-            plat1.scaleY = .25;
-            plat1.body.allowGravity = false;
-            plat1.body.immovable = true;
+        var plat1 = this.physics.add.sprite(100, 300, "plat")
+        this.platforms.add(plat1);
+        this.physics.add.collider(this.player, plat1);
+        plat1.scaleX = .45;
+        plat1.scaleY = .25;
+        plat1.body.allowGravity = false;
+        plat1.body.immovable = true;
 
-            var plat2 = this.physics.add.sprite(720, 350, "plat")
-            this.platforms.add(plat2);
-            this.physics.add.collider(this.player, plat2);
-            plat2.scaleX = .45;
-            plat2.scaleY = .25;
-            plat2.body.allowGravity = false;
-            plat2.body.immovable = true;
+        var plat2 = this.physics.add.sprite(720, 350, "plat")
+        this.platforms.add(plat2);
+        this.physics.add.collider(this.player, plat2);
+        plat2.scaleX = .45;
+        plat2.scaleY = .25;
+        plat2.body.allowGravity = false;
+        plat2.body.immovable = true;
 
-            var plat3 = this.physics.add.sprite(500, 220, "plat")
-            this.platforms.add(plat3);
-            this.physics.add.collider(this.player, plat3);
-            plat3.scaleX = .45;
-            plat3.scaleY = .25;
-            plat3.body.allowGravity = false;
-            plat3.body.immovable = true;
+        var plat3 = this.physics.add.sprite(500, 220, "plat")
+        this.platforms.add(plat3);
+        this.physics.add.collider(this.player, plat3);
+        plat3.scaleX = .45;
+        plat3.scaleY = .25;
+        plat3.body.allowGravity = false;
+        plat3.body.immovable = true;
 
-            var plat4 = this.physics.add.sprite(500, 400, "plat")
-            this.platforms.add(plat4);
-            this.physics.add.collider(this.player, plat4);
-            plat4.scaleX = .45;
-            plat4.scaleY = .25;
-            plat4.body.allowGravity = false;
-            plat4.body.immovable = true;
+        var plat4 = this.physics.add.sprite(500, 400, "plat")
+        this.platforms.add(plat4);
+        this.physics.add.collider(this.player, plat4);
+        plat4.scaleX = .45;
+        plat4.scaleY = .25;
+        plat4.body.allowGravity = false;
+        plat4.body.immovable = true;
     }
 
     playCollectCoin(player, coin) {
@@ -184,12 +230,12 @@ class Scene2 extends Phaser.Scene {
 
         coin.disableBody(true, true);
         var musicConfig = {
-            mute: false, 
-            volume: 0.1, 
+            mute: false,
+            volume: 0.1,
             rate: 1,
-            detune: 0, 
-            seek: 0, 
-            loop: false, 
+            detune: 0,
+            seek: 0,
+            loop: false,
             delay: 0
         }
         this.coinSound.play(musicConfig);
@@ -198,14 +244,14 @@ class Scene2 extends Phaser.Scene {
     generateCoins() {
         this.coinAmount = Math.floor(Math.random() * 10) + 5;
 
-        for(var i = 0; i < this.coinAmount; i++) {
+        for (var i = 0; i < this.coinAmount; i++) {
             var randomX = Phaser.Math.Between(0, this.game.config.width);
 
             var coin = this.physics.add.sprite(randomX, 40, "coin");
 
             this.coins.add(coin);
 
-            coin.setGravity(0,1500);
+            coin.setGravity(0, 1500);
             coin.setCollideWorldBounds(true);
             coin.anims.play('rot', true);
             coin.scaleX = .35;
@@ -215,7 +261,7 @@ class Scene2 extends Phaser.Scene {
         }
     }
 
-    generateHexColor() { 
+    generateHexColor() {
         return '#' + ((0.5 + 0.5 * Math.random()) * 0xFFFFFF << 0).toString(16);
     }
 
@@ -226,7 +272,7 @@ class Scene2 extends Phaser.Scene {
 
         if (enemy.body.x > player.body.x) {
             enemy.body.velocity.x = 100;
-        } 
+        }
         if (enemy.body.x < player.body.x) {
             enemy.body.velocity.x = -100;
         }
@@ -237,7 +283,7 @@ class Scene2 extends Phaser.Scene {
         gameScore -= 10;
         this.scoreLabel.text = "SCORE " + gameScore;
 
-        if(bird.body.x > player.body.x) {
+        if (bird.body.x > player.body.x) {
             bird.body.velocity.x = 200;
         }
         if (bird.body.x < player.body.x) {
