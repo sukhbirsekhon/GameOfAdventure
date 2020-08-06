@@ -19,6 +19,12 @@ class Welcome extends Phaser.Scene {
         this.load.audio("snakeSound", "assets/sound/snake.mp3");
         this.load.audio("birdSound", "assets/sound/bird.mp3");
 
+
+        this.load.image("spacePlatform", "assets/images/SpaceTheme/spacePlatform4.png");
+        this.load.image("spaceBackground", "assets/images/SpaceTheme/spaceBack.jpg");
+        this.load.image("spaceBackground2", "assets/images/SpaceTheme/spaceBack2.jpg");
+        this.load.image("meteor", "assets/images/SpaceTheme/meteor.png");
+
         this.load.spritesheet("player", "spritesheets/Character/character.png", {
             frameWidth: 168,
             frameHeight: 216
@@ -27,6 +33,16 @@ class Welcome extends Phaser.Scene {
         this.load.spritesheet("playerRev", "spritesheets/Character/characterRev.png", {
             frameWidth: 168,
             frameHeight: 216
+        });
+
+        this.load.spritesheet("astronaut", "spritesheets/Character/astronaut.png", {
+            frameWidth: 120,
+            frameHeight: 160
+        });
+
+        this.load.spritesheet("astronautRev", "spritesheets/Character/astronautRev.png", {
+            frameWidth: 120,
+            frameHeight: 160
         });
 
         this.load.spritesheet("coin", "spritesheets/Coins/coins.png", {
@@ -95,6 +111,20 @@ class Welcome extends Phaser.Scene {
         this.anims.create({
             key: 'right',
             frames: this.anims.generateFrameNumbers('player', { start: 0, end: 4 }),
+            frameRate: 10,
+            repeat: -1
+        });
+
+        this.anims.create({
+            key: 'astroRight',
+            frames: this.anims.generateFrameNumbers('astronaut', { start: 0, end: 4 }),
+            frameRate: 10,
+            repeat: -1
+        });
+
+        this.anims.create({
+            key: 'astroLeft',
+            frames: this.anims.generateFrameNumbers('astronautRev', { start: 4, end: 0 }),
             frameRate: 10,
             repeat: -1
         });
