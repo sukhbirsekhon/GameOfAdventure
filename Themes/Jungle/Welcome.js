@@ -4,9 +4,13 @@ class Welcome extends Phaser.Scene {
     }
 
     preload() {
-        this.load.image("background", "assets/images/JungleTheme/jungleBack.jpg")
-        this.load.image("background2", "assets/images/JungleTheme/jungleBack6.jpg")
-        this.load.image("background3", "assets/images/JungleTheme/jungleBack3.jpg")
+        this.load.image("background0", "assets/titleScreen/LoadingBackground.png");
+        this.load.image("background", "assets/images/JungleTheme/jungleBack.jpg");
+        this.load.image("background2", "assets/images/JungleTheme/jungleBack6.jpg");
+        this.load.image("background3", "assets/images/JungleTheme/jungleBack3.jpg");
+        this.load.image("gameTitle", "assets/titleScreen/GameTitle.png");
+        this.load.image("jungleTitleBackground", "assets/titleScreen/cartoonJungleBackground.png");
+
         this.load.image("plat", "assets/images/JungleTheme/platform1.png");
         this.load.image("fireball", "assets/images/JungleTheme/fireBall.png");
         this.load.bitmapFont("pixelFont", "assets/font/font.png", "assets/font/font.xml");
@@ -73,9 +77,30 @@ class Welcome extends Phaser.Scene {
     }
 
     create() {
-        this.add.text(20, 20, "Welcome to GAME OF ADVENTURE!");
-        this.add.text(20, 80, "Press Spacebar to start the game...");
+        this.background = this.add.tileSprite(0, 0, this.game.config.width, this.game.config.height, "background0")
+        this.background.setOrigin(0,0);
+        this.gameTitle = this.add.image(450,100,"gameTitle");
+        this.jungleBackground = this.add.image(300,300,"jungleTitleBackground").setInteractive().on('pointerdown', () => this.startJungle() )
+        //this.add.text(20, 20, "Welcome to GAME OF ADVENTURE!");
+        //this.add.text(20, 80, "Press Spacebar to start the game...");
         
+        
+        this.spacebar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+        this.createAnimations();
+    }
+
+    update() {
+        this.jungleBackground.scaleX = .25;
+        this.jungleBackground.scaleY = .25;
+
+        //if (Phaser.Input.Keyboard.JustDown(this.spacebar)) { }
+    }
+
+    startJungle() {
+        this.scene.start("play1");
+    }
+
+    createAnimations() {
         this.anims.create({
             key: 'left',
             frames: this.anims.generateFrameNumbers('playerRev', { start: 4, end: 0 }),
@@ -146,12 +171,5 @@ class Welcome extends Phaser.Scene {
             repeat: 0,
             hideOnComplete: true
           });
-
-        this.spacebar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
-    }
-    update() {
-        if (Phaser.Input.Keyboard.JustDown(this.spacebar)) {
-         this.scene.start("spacePlay1");
-        }
     }
 }
