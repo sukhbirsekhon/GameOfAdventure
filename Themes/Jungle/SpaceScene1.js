@@ -26,13 +26,16 @@ class SpaceScene1 extends Phaser.Scene {
       this.coins = this.physics.add.group();
       
       this.player = this.physics.add.sprite(20, 500, "astronaut");
+      this.player.setGravity(0,1500);
       this.player.setCollideWorldBounds(true);
-      this.player.setVelocityX(200);
-      this.player.setVelocityY(200);
+
+      this.platforms = this.physics.add.group();
 
       this.cursorKeys = this.input.keyboard.createCursorKeys();
       this.spaceKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
-      
+
+      this.addPlatformToRandomPlaces();
+
       this.generateCoins();
 
       var graphics = this.add.graphics();
@@ -51,8 +54,8 @@ class SpaceScene1 extends Phaser.Scene {
   }
 
   update() {
-      this.player.scaleX = .35;
-      this.player.scaleY = .35;
+      this.player.scaleX = .5;
+      this.player.scaleY = .4;
 
       this.movePlayerManager();
 
@@ -68,6 +71,48 @@ class SpaceScene1 extends Phaser.Scene {
       }
 
   }
+
+  addPlatformToRandomPlaces() {
+    var plat = this.physics.add.sprite(250, 150, "spacePlatform")
+    this.platforms.add(plat);
+    this.physics.add.collider(this.player, plat);
+    plat.scaleX = .1;
+    plat.scaleY = .05;
+    plat.body.allowGravity = false;
+    plat.body.immovable = true;
+
+    var plat1 = this.physics.add.sprite(100, 300, "spacePlatform")
+    this.platforms.add(plat1);
+    this.physics.add.collider(this.player, plat1);
+    plat1.scaleX = .1;
+    plat1.scaleY = .05;
+    plat1.body.allowGravity = false;
+    plat1.body.immovable = true;
+
+    var plat2 = this.physics.add.sprite(720, 350, "spacePlatform")
+    this.platforms.add(plat2);
+    this.physics.add.collider(this.player, plat2);
+    plat2.scaleX = .1;
+    plat2.scaleY = .05;
+    plat2.body.allowGravity = false;
+    plat2.body.immovable = true;
+
+    var plat3 = this.physics.add.sprite(500, 220, "spacePlatform")
+    this.platforms.add(plat3);
+    this.physics.add.collider(this.player, plat3);
+    plat3.scaleX = .1;
+    plat3.scaleY = .05;
+    plat3.body.allowGravity = false;
+    plat3.body.immovable = true;
+
+    var plat4 = this.physics.add.sprite(500, 400, "spacePlatform")
+    this.platforms.add(plat4);
+    this.physics.add.collider(this.player, plat4);
+    plat4.scaleX = .1;
+    plat4.scaleY = .05;
+    plat4.body.allowGravity = false;
+    plat4.body.immovable = true;
+}
 
   movePlayerManager() {
       if(this.cursorKeys.left.isDown){

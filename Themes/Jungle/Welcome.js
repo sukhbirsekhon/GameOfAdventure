@@ -15,6 +15,8 @@ class Welcome extends Phaser.Scene {
         this.load.audio("snakeSound", "assets/sound/snake.mp3");
         this.load.audio("birdSound", "assets/sound/bird.mp3");
 
+
+        this.load.image("spacePlatform", "assets/images/SpaceTheme/spacePlatform4.png");
         this.load.image("spaceBackground", "assets/images/SpaceTheme/spaceBack.jpg");
 
         this.load.spritesheet("player", "spritesheets/Character/character.png", {
