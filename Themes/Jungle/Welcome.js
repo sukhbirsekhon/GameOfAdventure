@@ -18,6 +18,8 @@ class Welcome extends Phaser.Scene {
 
         this.load.image("spacePlatform", "assets/images/SpaceTheme/spacePlatform4.png");
         this.load.image("spaceBackground", "assets/images/SpaceTheme/spaceBack.jpg");
+        this.load.image("spaceBackground2", "assets/images/SpaceTheme/spaceBack2.jpg");
+        this.load.image("meteor", "assets/images/SpaceTheme/meteor.png");
 
         this.load.spritesheet("player", "spritesheets/Character/character.png", {
             frameWidth: 168,

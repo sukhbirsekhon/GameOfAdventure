@@ -59,8 +59,8 @@ class SpaceScene1 extends Phaser.Scene {
 
       this.movePlayerManager();
 
-      if(this.player.x > this.game.config.width - 30) {
-          this.scene.start("play2");
+      if(this.player.x > this.game.config.width - 50) {
+          this.scene.start("spacePlay2");
       }
 
       this.physics.add.overlap(this.player, this.coins, this.playCollectCoin, null, this);
