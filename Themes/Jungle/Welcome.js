@@ -15,6 +15,9 @@ class Welcome extends Phaser.Scene {
         this.load.audio("snakeSound", "assets/sound/snake.mp3");
         this.load.audio("birdSound", "assets/sound/bird.mp3");
 
+        this.load.image("spaceBackground", "assets/images/SpaceTheme/spaceBack.jpg");
+        this.load.image("spacePlat", "assets/images/SpaceTheme/spacePlatform.png");
+
         this.load.spritesheet("player", "spritesheets/Character/character.png", {
             frameWidth: 168,
             frameHeight: 216
@@ -121,7 +124,7 @@ class Welcome extends Phaser.Scene {
     }
     update() {
         if (Phaser.Input.Keyboard.JustDown(this.spacebar)) {
-         this.scene.start("play1");
+         this.scene.start("spacePlay1");
         }
     }
 }

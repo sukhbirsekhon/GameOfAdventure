@@ -6,7 +6,7 @@ var config = {
     width: 900, 
     height: 500,
     backgroundColor: 0x000000, 
-    scene: [Welcome, Scene1, Scene2, Scene3],
+    scene: [Welcome, Scene1, Scene2, Scene3, SpaceScene1],
     pixelArt: true,
     physics: {
         default: "arcade",
@@ -17,4 +17,4 @@ var config = {
     }
 }
 var gameOver = false;
-    var game = new Phaser.Game(config);
+var game = new Phaser.Game(config);
