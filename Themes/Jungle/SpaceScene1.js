@@ -25,17 +25,14 @@ class SpaceScene1 extends Phaser.Scene {
       this.coinSound = this.sound.add("coinSound");
       this.coins = this.physics.add.group();
       
-      this.player = this.physics.add.sprite(20, 500, "player");
-      this.player.setGravity(0,1500);
+      this.player = this.physics.add.sprite(20, 500, "astronaut");
       this.player.setCollideWorldBounds(true);
-
-      this.platforms = this.physics.add.group();
+      this.player.setVelocityX(200);
+      this.player.setVelocityY(200);
 
       this.cursorKeys = this.input.keyboard.createCursorKeys();
       this.spaceKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
       
-      this.addPlatformToRandomPlaces();
-
       this.generateCoins();
 
       var graphics = this.add.graphics();
@@ -75,11 +72,11 @@ class SpaceScene1 extends Phaser.Scene {
   movePlayerManager() {
       if(this.cursorKeys.left.isDown){
           this.player.setVelocityX(-200);
-          this.player.anims.play('left', true);
+          this.player.anims.play('astroLeft', true);
 
       } else if(this.cursorKeys.right.isDown) {
           this.player.setVelocityX(200);
-          this.player.anims.play('right', true);
+          this.player.anims.play('astroRight', true);
       }
       else {
           this.player.body.velocity.x = 0;
@@ -91,32 +88,6 @@ class SpaceScene1 extends Phaser.Scene {
               this.player.setVelocityY(-700);
           }
       }
-  }
-
-  addPlatformToRandomPlaces() {
-    var spacePlat1 = this.physics.add.sprite(300, 180, "spacePlat")
-    this.platforms.add(spacePlat1);
-    this.physics.add.collider(this.player, spacePlat1);
-    spacePlat1.scaleX = .30;
-    spacePlat1.scaleY = .15;
-    spacePlat1.body.allowGravity = false;
-    spacePlat1.body.immovable = true;
-
-    var spacePlat2 = this.physics.add.sprite(720, 280, "spacePlat")
-    this.platforms.add(spacePlat2);
-    this.physics.add.collider(this.player, spacePlat2);
-    spacePlat2.scaleX = .30;
-    spacePlat2.scaleY = .15;
-    spacePlat2.body.allowGravity = false;
-    spacePlat2.body.immovable = true;
-
-    var spacePlat3 = this.physics.add.sprite(400, 400, "spacePlat")
-    this.platforms.add(spacePlat3);
-    this.physics.add.collider(this.player, spacePlat3);
-    spacePlat3.scaleX = .30;
-    spacePlat3.scaleY = .15;
-    spacePlat3.body.allowGravity = false;
-    spacePlat3.body.immovable = true;
   }
 
   playCollectCoin(player, coin) {
