@@ -8,6 +8,8 @@ class Scene1 extends Phaser.Scene {
         this.background = this.add.tileSprite(0, 0, this.game.config.width, this.game.config.height, "background")
         this.background.setOrigin(0,0);
 
+        console.log(weatherDes);
+        
         this.collectedCoins = 0;
 
         var musicConfig = {
@@ -56,7 +58,6 @@ class Scene1 extends Phaser.Scene {
     update() {
         this.player.scaleX = .35;
         this.player.scaleY = .35;
-
         this.movePlayerManager();
 
         if(this.player.x > this.game.config.width - 30) {
