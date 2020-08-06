@@ -6,7 +6,7 @@ var config = {
     width: 900, 
     height: 500,
     backgroundColor: 0x000000, 
-    scene: [Welcome, Scene1, Scene2, Scene3],
+    scene: [Welcome, Scene1, Scene2, Scene3, SpaceScene1, SpaceScene2],
     pixelArt: true,
     physics: {
         default: "arcade",
@@ -51,3 +51,4 @@ if (`geolocation` in navigator) {
     return fahrenheitTemp;
   }
 var game = new Phaser.Game(config);
+
