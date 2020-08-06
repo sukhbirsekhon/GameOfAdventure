@@ -7,6 +7,8 @@ class Scene1 extends Phaser.Scene {
     create() {
         this.background = this.add.tileSprite(0, 0, this.game.config.width, this.game.config.height, "background")
         this.background.setOrigin(0,0);
+
+        console.log(weatherDes);
         
         this.collectedCoins = 0;
 
