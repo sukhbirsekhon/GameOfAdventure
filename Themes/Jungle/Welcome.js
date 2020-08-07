@@ -10,7 +10,7 @@ class Welcome extends Phaser.Scene {
         this.load.image("background3", "assets/images/JungleTheme/jungleBack3.jpg");
         this.load.image("gameTitle", "assets/titleScreen/GameTitle.png");
         this.load.image("jungleTitleBackground", "assets/titleScreen/cartoonJungleBackground.png");
-        this.load.image("spaceTitleBackground", "assets/titleScreen/cartoonJungleBackground.png");
+        this.load.image("spaceTitleBackground", "assets/titleScreen/spaceJungleBackground.png");
 
         this.load.image("plat", "assets/images/JungleTheme/platform1.png");
         this.load.image("fireball", "assets/images/JungleTheme/fireBall.png");
@@ -96,8 +96,8 @@ class Welcome extends Phaser.Scene {
         this.jungleBackground.scaleX = .25;
         this.jungleBackground.scaleY = .25;
 
-        this.spaceTitleBackground.scaleX = .25;
-        this.spaceTitleBackground.scaleY = .25;
+        this.spaceTitleBackground.scaleX = .27;
+        this.spaceTitleBackground.scaleY = .27;
 
     }
 
