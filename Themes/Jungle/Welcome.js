@@ -6,7 +6,7 @@ class Welcome extends Phaser.Scene {
     preload() {
         this.load.image("background0", "assets/titleScreen/LoadingBackground.png");
         this.load.image("background", "assets/images/JungleTheme/jungleBack.jpg");
-        this.load.image("background2", "assets/images/JungleTheme/jungleBack6.jpg");
+        this.load.image("background2", "assets/images/JungleTheme/JungleBack6.jpg");
         this.load.image("background3", "assets/images/JungleTheme/jungleBack3.jpg");
         this.load.image("gameTitle", "assets/titleScreen/GameTitle.png");
         this.load.image("jungleTitleBackground", "assets/titleScreen/cartoonJungleBackground.png");
